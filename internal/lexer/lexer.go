@@ -2,6 +2,7 @@ package lexer
 
 import (
 	"monkey/internal/token"
+	"unicode"
 )
 
 type Lexer struct {
@@ -60,4 +61,18 @@ func (l *Lexer) NextToken() token.Token {
 
 	l.readChar()
 	return t
+}
+
+func (l *Lexer) readID() string {
+	pos := l.pos
+
+	if unicode.IsLetter(l.ch) {
+		l.readChar()
+	}
+
+	for unicode.IsNumber(l.ch) || unicode.IsLetter(l.ch) {
+		l.readChar()
+	}
+
+	return string(l.input[pos:l.pos])
 }
