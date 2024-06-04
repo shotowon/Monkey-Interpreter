@@ -61,6 +61,18 @@ func (l *Lexer) NextToken() token.Token {
 	case 0:
 		t.Type = token.EOF
 		t.Literal = ""
+	default:
+		switch {
+		case unicode.IsLetter(l.ch):
+			t.Literal = l.readID()
+			t.Type = token.LookupID(t.Literal)
+		case unicode.IsDigit(l.ch):
+			t.Literal = l.readNumber()
+			t.Type = token.INT
+		default:
+			t = token.New(token.INVALID, l.ch)
+		}
+		return t
 	}
 
 	l.readChar()
@@ -74,7 +86,17 @@ func (l *Lexer) readID() string {
 		l.readChar()
 	}
 
-	for unicode.IsNumber(l.ch) || unicode.IsLetter(l.ch) {
+	for unicode.IsDigit(l.ch) || unicode.IsLetter(l.ch) {
+		l.readChar()
+	}
+
+	return string(l.input[pos:l.pos])
+}
+
+func (l *Lexer) readNumber() string {
+	pos := l.pos
+
+	for unicode.IsDigit(l.ch) {
 		l.readChar()
 	}
 
