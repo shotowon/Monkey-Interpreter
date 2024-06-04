@@ -35,6 +35,10 @@ func (l *Lexer) readChar() {
 func (l *Lexer) NextToken() token.Token {
 	var t token.Token
 
+	for unicode.IsSpace(l.ch) {
+		l.readChar()
+	}
+
 	switch l.ch {
 	case '=':
 		t = token.New(token.EQ, l.ch)
