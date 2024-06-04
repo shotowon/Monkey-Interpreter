@@ -1,5 +1,9 @@
 package lexer
 
+import (
+	"monkey/internal/token"
+)
+
 type Lexer struct {
 	input   []rune
 	pos     int
@@ -25,4 +29,35 @@ func (l *Lexer) readChar() {
 
 	l.pos = l.readPos
 	l.readPos += 1
+}
+
+func (l *Lexer) NextToken() token.Token {
+	var t token.Token
+
+	switch l.ch {
+	case '=':
+		t = token.New(token.EQ, l.ch)
+	case ';':
+		t = token.New(token.SEMICOLON, l.ch)
+	case '(':
+		t = token.New(token.LPAREN, l.ch)
+	case ')':
+		t = token.New(token.RPAREN, l.ch)
+	case '{':
+		t = token.New(token.LBRACE, l.ch)
+	case '}':
+		t = token.New(token.RBRACE, l.ch)
+	case ',':
+		t = token.New(token.COMMA, l.ch)
+	case '+':
+		t = token.New(token.PLUS, l.ch)
+	case '-':
+		t = token.New(token.MINUS, l.ch)
+	case 0:
+		t.Type = token.EOF
+		t.Literal = ""
+	}
+
+	l.readChar()
+	return t
 }
