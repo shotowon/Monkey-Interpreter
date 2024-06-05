@@ -15,6 +15,10 @@ const (
 	ASTERISK // *
 	SLASH    // /
 
+	// COMBINED OPERATORS
+	EQ     // ==
+	NOT_EQ // !=
+
 	LT // <
 	GT // >
 
