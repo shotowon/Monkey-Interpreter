@@ -10,6 +10,12 @@ const (
 	EQ
 	PLUS
 	MINUS
+	BANG     // "!"
+	ASTERISK // "*"
+	SLASH    // "/"
+
+	LT // "<"
+	GT // ">"
 
 	COMMA
 	SEMICOLON
