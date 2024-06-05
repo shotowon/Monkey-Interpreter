@@ -41,7 +41,7 @@ func (l *Lexer) NextToken() token.Token {
 
 	switch l.ch {
 	case '=':
-		t = token.New(token.EQ, l.ch)
+		t = token.New(token.ASSIGN, l.ch)
 	case ';':
 		t = token.New(token.SEMICOLON, l.ch)
 	case '(':

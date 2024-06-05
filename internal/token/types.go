@@ -8,7 +8,7 @@ const (
 	INT
 
 	// OPERATORS
-	EQ
+	ASSIGN // =
 	PLUS
 	MINUS
 	BANG     // !
