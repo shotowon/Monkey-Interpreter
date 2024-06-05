@@ -21,17 +21,6 @@ func New(input string) *Lexer {
 	return l
 }
 
-func (l *Lexer) readChar() {
-	if l.readPos >= len(l.input) {
-		l.ch = 0
-	} else {
-		l.ch = l.input[l.readPos]
-	}
-
-	l.pos = l.readPos
-	l.readPos += 1
-}
-
 func (l *Lexer) NextToken() token.Token {
 	var t token.Token
 
@@ -103,6 +92,17 @@ func (l *Lexer) readID() string {
 	return string(l.input[pos:l.pos])
 }
 
+func (l *Lexer) readChar() {
+	if l.readPos >= len(l.input) {
+		l.ch = 0
+	} else {
+		l.ch = l.input[l.readPos]
+	}
+
+	l.pos = l.readPos
+	l.readPos += 1
+}
+
 func (l *Lexer) readNumber() string {
 	pos := l.pos
 
@@ -111,4 +111,12 @@ func (l *Lexer) readNumber() string {
 	}
 
 	return string(l.input[pos:l.pos])
+}
+
+func (l *Lexer) peekChar() rune {
+	if l.readPos >= len(l.input) {
+		return 0
+	}
+
+	return l.input[l.readPos]
 }
