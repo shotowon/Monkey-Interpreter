@@ -30,7 +30,21 @@ func (l *Lexer) NextToken() token.Token {
 
 	switch l.ch {
 	case '=':
-		t = token.New(token.ASSIGN, l.ch)
+		if l.peekChar() == '=' {
+			ch := l.ch
+			l.readChar()
+			t = token.Token{Type: token.EQ, Literal: string(ch) + string(l.ch)}
+		} else {
+			t = token.New(token.ASSIGN, l.ch)
+		}
+	case '!':
+		if l.peekChar() == '=' {
+			ch := l.ch
+			l.readChar()
+			t = token.Token{Type: token.NOT_EQ, Literal: string(ch) + string(l.ch)}
+		} else {
+			t = token.New(token.BANG, l.ch)
+		}
 	case ';':
 		t = token.New(token.SEMICOLON, l.ch)
 	case '(':
@@ -51,8 +65,6 @@ func (l *Lexer) NextToken() token.Token {
 		t = token.New(token.SLASH, l.ch)
 	case '*':
 		t = token.New(token.ASTERISK, l.ch)
-	case '!':
-		t = token.New(token.BANG, l.ch)
 	case '>':
 		t = token.New(token.GT, l.ch)
 	case '<':
