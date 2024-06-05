@@ -84,6 +84,82 @@ func TestNextToken1(t *testing.T) {
 				{token.EOF, ""},
 			},
 		},
+		{
+			name: "Lexing extended operator set",
+			input: `let five = 5;
+			let ten = 10;
+			let add = fn(x, y) {
+				x + y;
+			};
+			let result = add(five, ten);
+			!-/*5;
+			5 < 10 > 5;
+			5 <= 5 >= 5;			`,
+			expected: []nextTokenExpectedValue{
+				{token.LET, "let"},
+				{token.ID, "five"},
+				{token.EQ, "="},
+				{token.INT, "5"},
+				{token.SEMICOLON, ";"},
+
+				{token.LET, "let"},
+				{token.ID, "ten"},
+				{token.EQ, "="},
+				{token.INT, "10"},
+				{token.SEMICOLON, ";"},
+
+				{token.LET, "let"},
+				{token.ID, "add"},
+				{token.EQ, "="},
+				{token.FUNC, "fn"},
+				{token.LPAREN, "("},
+				{token.ID, "x"},
+				{token.COMMA, ","},
+				{token.ID, "y"},
+				{token.RPAREN, ")"},
+				{token.LBRACE, "{"},
+				{token.ID, "x"},
+				{token.PLUS, "+"},
+				{token.ID, "y"},
+				{token.SEMICOLON, ";"},
+				{token.RBRACE, "}"},
+				{token.SEMICOLON, ";"},
+
+				{token.LET, "let"},
+				{token.ID, "result"},
+				{token.EQ, "="},
+				{token.ID, "add"},
+				{token.LPAREN, "("},
+				{token.ID, "five"},
+				{token.COMMA, ","},
+				{token.ID, "ten"},
+				{token.RPAREN, ")"},
+				{token.SEMICOLON, ";"},
+
+				{token.BANG, "!"},
+				{token.MINUS, "-"},
+				{token.SLASH, "/"},
+				{token.ASTERISK, "*"},
+				{token.INT, "5"},
+				{token.SEMICOLON, ";"},
+
+				{token.INT, "5"},
+				{token.LT, "<"},
+				{token.INT, "10"},
+				{token.GT, ">"},
+				{token.INT, "5"},
+				{token.SEMICOLON, ";"},
+				{token.INT, "5"},
+				{token.LT, "<"},
+				{token.EQ, "="},
+				{token.INT, "5"},
+				{token.GT, ">"},
+				{token.EQ, "="},
+				{token.INT, "5"},
+				{token.SEMICOLON, ";"},
+				{token.EOF, ""},
+			},
+		},
 	}
 
 	for _, test := range tests {
