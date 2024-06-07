@@ -47,9 +47,31 @@ func (p *Parser) ParseProgram() *ast.Program {
 
 func (p *Parser) parseStatement() ast.Statement {
 	switch p.currToken.Type {
+	case token.LET:
+		return p.parseLetStatement()
 	default:
 		return nil
 	}
+}
+
+func (p *Parser) parseLetStatement() ast.Statement {
+	stmt := &ast.LetStatement{Token: p.currToken}
+
+	if !p.expectPeek(token.ID) {
+		return nil
+	}
+
+	stmt.Name = &ast.ID{Token: p.currToken, Value: p.currToken.Literal}
+
+	if !p.expectPeek(token.ASSIGN) {
+		return nil
+	}
+
+	for p.currToken.Type != token.SEMICOLON {
+		p.nextToken()
+	}
+
+	return stmt
 }
 
 func (p *Parser) expectPeek(t token.TokenType) bool {
