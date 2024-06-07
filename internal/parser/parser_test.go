@@ -66,3 +66,17 @@ func testLetStatement(t *testing.T, s ast.Statement, name string) bool {
 
 	return true
 }
+
+func checkParserErrors(t *testing.T, p *parser.Parser) {
+	errors := p.Errors()
+	if len(errors) == 0 {
+		return
+	}
+
+	t.Errorf("parser has %d errors", len(errors))
+	for _, errMsg := range errors {
+		t.Errorf("parser error: %q", errMsg)
+	}
+
+	t.FailNow()
+}
