@@ -4,6 +4,7 @@ import (
 	"monkey/internal/ast"
 	"monkey/internal/lexer"
 	"monkey/internal/parser"
+	"monkey/internal/token"
 	"testing"
 )
 
@@ -69,6 +70,28 @@ func TestLetStatements(t *testing.T) {
 		if !testLetStatement(t, stmt, test.expectedID) {
 			return
 		}
+	}
+}
+
+func TestString(t *testing.T) {
+	program := &ast.Program{
+		Statements: []ast.Statement{
+			&ast.LetStatement{
+				Token: token.Token{Type: token.LET, Literal: "let"},
+				Name: &ast.ID{
+					Token: token.Token{Type: token.ID, Literal: "a"},
+					Value: "a",
+				},
+				Value: &ast.ID{
+					Token: token.Token{Type: token.ID, Literal: "b"},
+					Value: "b",
+				},
+			},
+		},
+	}
+
+	if program.String() != "let a = b;" {
+		t.Errorf("program.String() is not correct. got=%q", program.String())
 	}
 }
 
