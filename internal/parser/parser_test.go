@@ -75,7 +75,7 @@ func TestStatementsParsing(t *testing.T) {
 	})
 
 	t.Run("Expressions", func(t *testing.T) {
-		t.Run("Test identifier parsing", func(t *testing.T) {
+		t.Run("Test identifier expression parsing", func(t *testing.T) {
 			input := `foobar;`
 
 			l := lexer.New(input)
