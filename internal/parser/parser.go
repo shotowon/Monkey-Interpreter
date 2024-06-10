@@ -98,6 +98,16 @@ func (p *Parser) parseReturnStatement() ast.Statement {
 	return stmt
 }
 
+func (p *Parser) parseExpression(precedence Precedence) ast.Expression {
+	prefix := p.prefixParseFns[p.currToken.Type]
+	if prefix == nil {
+		return nil
+	}
+	leftExp := prefix()
+
+	return leftExp
+}
+
 func (p *Parser) expectPeek(t token.TokenType) bool {
 	if p.peekToken.Type == t {
 		p.nextToken()
