@@ -1,7 +1,9 @@
 package parser
 
+type Precedence int
+
 const (
-	_ int = iota
+	_ Precedence = iota
 	LOWEST
 	EQUALS      // ==
 	LESSGREATER // > or <
