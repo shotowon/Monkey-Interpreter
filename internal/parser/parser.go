@@ -62,7 +62,7 @@ func (p *Parser) parseStatement() ast.Statement {
 	case token.RETURN:
 		return p.parseReturnStatement()
 	default:
-		return nil
+		return p.parseExpressionStatement()
 	}
 }
 
@@ -92,6 +92,18 @@ func (p *Parser) parseReturnStatement() ast.Statement {
 	p.nextToken()
 
 	for p.currToken.Type != token.SEMICOLON {
+		p.nextToken()
+	}
+
+	return stmt
+}
+
+func (p *Parser) parseExpressionStatement() ast.Statement {
+	stmt := &ast.ExpressionStatement{Token: p.currToken}
+
+	stmt.Expression = p.parseExpression(LOWEST)
+
+	if p.peekToken.Type == token.SEMICOLON {
 		p.nextToken()
 	}
 
