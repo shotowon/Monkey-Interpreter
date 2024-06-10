@@ -1,8 +1,10 @@
 package parser
 
 import (
+	"fmt"
 	"monkey/internal/ast"
 	"monkey/internal/token"
+	"strconv"
 )
 
 func (p *Parser) parseLetStatement() ast.Statement {
@@ -64,4 +66,19 @@ func (p *Parser) parseID() ast.Expression {
 		Token: p.currToken,
 		Value: p.currToken.Literal,
 	}
+}
+
+func (p *Parser) parseIntegerLiteral() ast.Expression {
+	lit := &ast.IntegerLiteral{Token: p.currToken}
+
+	value, err := strconv.ParseInt(p.currToken.Literal, 0, 64)
+	if err != nil {
+		p.errors = append(p.errors,
+			fmt.Sprintf("could not parse %q as integer", p.currToken.Literal),
+		)
+		return nil
+	}
+	lit.Value = value
+
+	return lit
 }
