@@ -51,9 +51,14 @@ func (p *Parser) parseExpressionStatement() ast.Statement {
 	return stmt
 }
 
+func (p *Parser) noPrefixParseFnErr(t token.TokenType) {
+	p.errors = append(p.errors, fmt.Sprintf("no prefix parse function for %d found", t))
+}
+
 func (p *Parser) parseExpression(precedence Precedence) ast.Expression {
 	prefix := p.prefixParseFns[p.currToken.Type]
 	if prefix == nil {
+		p.noPrefixParseFnErr(p.currToken.Type)
 		return nil
 	}
 	leftExp := prefix()
