@@ -1,6 +1,7 @@
 package parser_test
 
 import (
+	"fmt"
 	"monkey/internal/ast"
 	"monkey/internal/lexer"
 	"monkey/internal/parser"
@@ -200,4 +201,22 @@ func checkParserErrors(t *testing.T, p *parser.Parser) {
 	}
 
 	t.FailNow()
+}
+
+func testIntegerLiteral(t *testing.T, exp ast.Expression, value int64) bool {
+	integ, ok := exp.(*ast.IntegerLiteral)
+	if !ok {
+		t.Errorf("il not *ast.IntegerLiteral. got=%T", exp)
+		return false
+	}
+	if integ.Value != value {
+		t.Errorf("integ.Value not %d. got=%d", value, integ.Value)
+		return false
+	}
+	if integ.TokenLiteral() != fmt.Sprintf("%d", value) {
+		t.Errorf("integ.TokenLiteral not %d. got=%s", value,
+			integ.TokenLiteral())
+		return false
+	}
+	return true
 }
