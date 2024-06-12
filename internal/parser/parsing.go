@@ -99,3 +99,17 @@ func (p *Parser) parsePrefixExpression() ast.Expression {
 
 	return expr
 }
+
+func (p *Parser) parseInfixExpression(left ast.Expression) ast.Expression {
+	expr := &ast.InfixExpression{
+		Token:    p.currToken,
+		Operator: p.currToken.Literal,
+		Left:     left,
+	}
+
+	prec := p.currPrecedence()
+	p.nextToken()
+	expr.Right = p.parseExpression(prec)
+
+	return expr
+}
