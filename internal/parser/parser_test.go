@@ -229,7 +229,79 @@ func TestStatementsParsing(t *testing.T) {
 					return
 				}
 			}
+		})
 
+		t.Run("operator precedence testing", func(t *testing.T) {
+			type precTest struct {
+				input    string
+				expected string
+			}
+
+			precedenceTests := []precTest{
+				{
+					"-a * b",
+					"((-a) * b)",
+				},
+				{
+					"!-a",
+					"(!(-a))",
+				},
+				{
+					"a + b + c",
+					"((a + b) + c)",
+				},
+				{
+					"a + b - c",
+					"((a + b) - c)",
+				},
+				{
+					"a * b * c",
+					"((a * b) * c)",
+				},
+				{
+					"a * b / c",
+					"((a * b) / c)",
+				},
+				{
+					"a + b / c",
+					"(a + (b / c))",
+				},
+				{
+					"a + b * c + d / e - f",
+					"(((a + (b * c)) + (d / e)) - f)",
+				},
+				{
+					"3 + 4; -5 * 5",
+					"(3 + 4)((-5) * 5)",
+				},
+				{
+					"5 > 4 == 3 < 4",
+					"((5 > 4) == (3 < 4))",
+				},
+				{
+					"5 < 4 != 3 > 4",
+					"((5 < 4) != (3 > 4))",
+				},
+				{
+					"3 + 4 * 5 == 3 * 1 + 4 * 5",
+					"((3 + (4 * 5)) == ((3 * 1) + (4 * 5)))",
+				},
+				{
+					"3 + 4 * 5 == 3 * 1 + 4 * 5",
+					"((3 + (4 * 5)) == ((3 * 1) + (4 * 5)))",
+				},
+			}
+
+			for _, pTest := range precedenceTests {
+				l := lexer.New(pTest.input)
+				p := parser.New(l)
+				program := p.ParseProgram()
+				checkParserErrors(t, p)
+
+				if actual := program.String(); actual != pTest.expected {
+					t.Errorf("expected=%q, got=%q", pTest.expected, actual)
+				}
+			}
 		})
 	})
 }
