@@ -178,6 +178,52 @@ func TestStatementsParsing(t *testing.T) {
 				}
 			}
 		})
+		t.Run("Parsing infix expressions", func(t *testing.T) {
+			type infixTest struct {
+				input    string
+				left     int64
+				operator string
+				right    int64
+			}
+
+			infixTests := []infixTest{
+				{"5 + 5;", 5, "+", 5},
+			}
+
+			for _, iTest := range infixTests {
+				l := lexer.New(iTest.input)
+				p := parser.New(l)
+				program := p.ParseProgram()
+				checkParserErrors(t, p)
+
+				if len(program.Statements) != 1 {
+					t.Fatalf("program.Statements does not container %d statements. got=%d", 1, len(program.Statements))
+				}
+
+				stmt, ok := program.Statements[0].(*ast.ExpressionStatement)
+				if !ok {
+					t.Fatalf("program.Statements[0] is not *ast.ExpressionStatement")
+				}
+
+				infix, ok := stmt.Expression.(*ast.InfixExpression)
+				if !ok {
+					t.Fatalf("stmt.Expression is not *ast.InfixExpression")
+				}
+
+				if !testIntegerLiteral(t, infix.Left, iTest.left) {
+					return
+				}
+
+				if infix.Operator != iTest.operator {
+					t.Fatalf("infix.Operator is not %s. got=%s", iTest.operator.infix.Operator)
+				}
+
+				if !testIntegerLiteral(t, infix.Right, iTest.right) {
+					return
+				}
+			}
+
+		})
 	})
 }
 
