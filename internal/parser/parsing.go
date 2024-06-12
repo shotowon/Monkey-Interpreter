@@ -87,3 +87,15 @@ func (p *Parser) parseIntegerLiteral() ast.Expression {
 
 	return lit
 }
+
+func (p *Parser) parsePrefixExpression() ast.Expression {
+	expr := &ast.PrefixExpression{
+		Token:    p.currToken,
+		Operator: p.currToken.Literal,
+	}
+
+	p.nextToken()
+	expr.Right = p.parseExpression(PREFIX)
+
+	return expr
+}
