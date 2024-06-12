@@ -420,3 +420,26 @@ func testLiteralExpr(t *testing.T, exp ast.Expression, expected interface{}) boo
 	t.Errorf("type of exp not handled. got=%T", exp)
 	return false
 }
+
+func testInfixExpr(t *testing.T, exp ast.Expression, left interface{}, op string, right interface{}) bool {
+	opExp, ok := exp.(*ast.InfixExpression)
+	if !ok {
+		t.Errorf("exp is not *ast.InfixExpression. got=%T", exp)
+		return false
+	}
+
+	if !testLiteralExpr(t, opExp.Left, left) {
+		return false
+	}
+
+	if opExp.Operator != op {
+		t.Errorf("opExp.Operator is not %s. got=%s", op, opExp.Operator)
+		return false
+	}
+
+	if !testLiteralExpr(t, opExp.Right, right) {
+		return false
+	}
+
+	return true
+}
