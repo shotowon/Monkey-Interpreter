@@ -123,3 +123,7 @@ func (p *Parser) parseInfixExpression(left ast.Expression) ast.Expression {
 
 	return expr
 }
+
+func (p *Parser) parseBooleanExpression() ast.Expression {
+	return &ast.BooleanExpression{Token: p.currToken, Value: token.TRUE == p.currToken.Type}
+}
