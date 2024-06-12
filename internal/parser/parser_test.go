@@ -215,7 +215,7 @@ func TestStatementsParsing(t *testing.T) {
 				}
 
 				if infix.Operator != iTest.operator {
-					t.Fatalf("infix.Operator is not %s. got=%s", iTest.operator.infix.Operator)
+					t.Fatalf("infix.Operator is not %s. got=%s", iTest.operator, infix.Operator)
 				}
 
 				if !testIntegerLiteral(t, infix.Right, iTest.right) {
