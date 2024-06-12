@@ -104,3 +104,12 @@ func (ie *InfixExpression) TokenLiteral() string { return ie.Token.Literal }
 func (ie *InfixExpression) String() string {
 	return "(" + ie.Left.String() + " " + ie.Operator + " " + ie.Right.String() + ")"
 }
+
+type BooleanExpression struct {
+	Token token.Token
+	Value bool
+}
+
+func (be *BooleanExpression) expressionNode()      {}
+func (be *BooleanExpression) TokenLiteral() string { return be.Token.Literal }
+func (be *BooleanExpression) String() string       { return be.Token.Literal }
