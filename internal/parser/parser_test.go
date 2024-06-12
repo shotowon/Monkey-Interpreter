@@ -386,3 +386,23 @@ func testIntegerLiteral(t *testing.T, exp ast.Expression, value int64) bool {
 	}
 	return true
 }
+
+func testID(t *testing.T, exp ast.Expression, value string) bool {
+	id, ok := exp.(*ast.ID)
+	if !ok {
+		t.Errorf("exp is not *ast.ID. got=%T", exp)
+		return false
+	}
+
+	if id.Value != value {
+		t.Errorf("id.Value is not %s. got=%s", value, id.Value)
+		return false
+	}
+
+	if id.TokenLiteral() != value {
+		t.Errorf("id.TokenLiteral() is not %s. got=%s", value, id.TokenLiteral())
+		return false
+	}
+
+	return true
+}
