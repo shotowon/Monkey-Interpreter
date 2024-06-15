@@ -290,6 +290,10 @@ func TestStatementsParsing(t *testing.T) {
 					"3 + 4 * 5 == 3 * 1 + 4 * 5",
 					"((3 + (4 * 5)) == ((3 * 1) + (4 * 5)))",
 				},
+				{
+					"3 < 4 == false",
+					"((3 < 4) == false)",
+				},
 			}
 
 			for _, pTest := range precedenceTests {
@@ -300,6 +304,41 @@ func TestStatementsParsing(t *testing.T) {
 
 				if actual := program.String(); actual != pTest.expected {
 					t.Errorf("expected=%q, got=%q", pTest.expected, actual)
+				}
+			}
+		})
+		t.Run("Boolean literal parsing", func(t *testing.T) {
+			type boolTest struct {
+				input    string
+				expected bool
+			}
+			tests := []boolTest{
+				{input: "true;", expected: true},
+				{input: "false;", expected: false},
+			}
+
+			for _, test := range tests {
+				l := lexer.New(test.input)
+				p := parser.New(l)
+				program := p.ParseProgram()
+				checkParserErrors(t, p)
+
+				if len(program.Statements) != 1 {
+					t.Fatalf("program.Statements does not contain %d statement. got=%d", 1, len(program.Statements))
+				}
+
+				stmt, ok := program.Statements[0].(*ast.ExpressionStatement)
+				if !ok {
+					t.Fatalf("program.Statements[0] is not *ast.ExpressionStatement. got=%T", program.Statements[0])
+				}
+
+				boolExpr, ok := stmt.Expression.(*ast.BooleanExpression)
+				if !ok {
+					t.Fatalf("stmt.Expression is not *ast.BooleanExpression. got=%T", stmt.Expression)
+				}
+
+				if boolExpr.Value != test.expected {
+					t.Errorf("boolExpr.Value is not equal %t. got=%t", test.expected, boolExpr.Value)
 				}
 			}
 		})
