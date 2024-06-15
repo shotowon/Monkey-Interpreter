@@ -482,3 +482,23 @@ func testInfixExpr(t *testing.T, exp ast.Expression, left interface{}, op string
 
 	return true
 }
+
+func testBoolExpr(t *testing.T, exp ast.Expression, value bool) bool {
+	bo, ok := exp.(*ast.BooleanExpression)
+	if !ok {
+		t.Errorf("exp is not an *ast.BooleanExpression")
+		return false
+	}
+
+	if bo.Value != value {
+		t.Errorf("bo.Value is not %t. got=%t", value, bo.Value)
+		return false
+	}
+
+	if bo.TokenLiteral() != fmt.Sprintf("%t", value) {
+		t.Errorf("bo.TokenLiteral() not %t. got=%s", value, bo.TokenLiteral())
+		return false
+	}
+
+	return true
+}
