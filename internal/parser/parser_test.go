@@ -141,12 +141,14 @@ func TestStatementsParsing(t *testing.T) {
 			type prefixTest struct {
 				input    string
 				operator string
-				intValue int64
+				value    interface{}
 			}
 
 			prefixTests := []prefixTest{
 				{"!15", "!", 15},
 				{"-15", "-", 15},
+				{"!true", "!", true},
+				{"-false", "-", false},
 			}
 
 			for _, pTest := range prefixTests {
@@ -173,7 +175,7 @@ func TestStatementsParsing(t *testing.T) {
 					t.Fatalf("exp.Operator is not %s statements. got=%T", pTest.operator, exp.Operator)
 				}
 
-				if !testIntegerLiteral(t, exp.Right, pTest.intValue) {
+				if !testLiteralExpr(t, exp.Right, pTest.value) {
 					return
 				}
 			}
