@@ -291,6 +291,14 @@ func TestStatementsParsing(t *testing.T) {
 					"((3 + (4 * 5)) == ((3 * 1) + (4 * 5)))",
 				},
 				{
+					"true",
+					"true",
+				},
+				{
+					"false",
+					"false",
+				},
+				{
 					"3 < 4 == false",
 					"((3 < 4) == false)",
 				},
