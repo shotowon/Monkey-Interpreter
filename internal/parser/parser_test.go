@@ -181,9 +181,9 @@ func TestStatementsParsing(t *testing.T) {
 		t.Run("Parsing infix expressions", func(t *testing.T) {
 			type infixTest struct {
 				input    string
-				left     int64
+				left     interface{}
 				operator string
-				right    int64
+				right    interface{}
 			}
 
 			infixTests := []infixTest{
@@ -195,6 +195,9 @@ func TestStatementsParsing(t *testing.T) {
 				{"5 < 5;", 5, "<", 5},
 				{"5 == 5;", 5, "==", 5},
 				{"5 != 5;", 5, "!=", 5},
+				{"true == true", true, "==", true},
+				{"true != false", true, "!=", false},
+				{"false == false", false, "==", false},
 			}
 
 			for _, iTest := range infixTests {
@@ -217,7 +220,7 @@ func TestStatementsParsing(t *testing.T) {
 					t.Fatalf("stmt.Expression is not *ast.InfixExpression")
 				}
 
-				if !testIntegerLiteral(t, infix.Left, iTest.left) {
+				if !testLiteralExpr(t, infix.Left, iTest.left) {
 					return
 				}
 
@@ -225,7 +228,7 @@ func TestStatementsParsing(t *testing.T) {
 					t.Fatalf("infix.Operator is not %s. got=%s", iTest.operator, infix.Operator)
 				}
 
-				if !testIntegerLiteral(t, infix.Right, iTest.right) {
+				if !testLiteralExpr(t, infix.Right, iTest.right) {
 					return
 				}
 			}
