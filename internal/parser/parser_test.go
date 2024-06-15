@@ -343,13 +343,8 @@ func TestStatementsParsing(t *testing.T) {
 					t.Fatalf("program.Statements[0] is not *ast.ExpressionStatement. got=%T", program.Statements[0])
 				}
 
-				boolExpr, ok := stmt.Expression.(*ast.BooleanExpression)
-				if !ok {
-					t.Fatalf("stmt.Expression is not *ast.BooleanExpression. got=%T", stmt.Expression)
-				}
-
-				if boolExpr.Value != test.expected {
-					t.Errorf("boolExpr.Value is not equal %t. got=%t", test.expected, boolExpr.Value)
+				if !testBoolExpr(t, stmt.Expression, test.expected) {
+					return
 				}
 			}
 		})
