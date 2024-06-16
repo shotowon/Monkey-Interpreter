@@ -13,3 +13,15 @@ func (i *Integer) Inspect() string {
 func (i *Integer) Type() ObjectType {
 	return T_INTEGER
 }
+
+type Boolean struct {
+	Value bool
+}
+
+func (b *Boolean) Inspect() string {
+	return fmt.Sprintf("%t", b.Value)
+}
+
+func (b *Boolean) Type() ObjectType {
+	return T_BOOL
+}
