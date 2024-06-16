@@ -134,10 +134,8 @@ func (p *Parser) currPrecedence() Precedence {
 }
 
 func (p *Parser) PrintErrors(out io.Writer) {
-	if len(p.errors) != 0 {
-		io.WriteString(out, "PARSER ERRORS:\n")
-		for _, msg := range p.errors {
-			io.WriteString(out, "\t"+msg+"\n")
-		}
+	io.WriteString(out, "PARSER ERRORS:\n")
+	for _, msg := range p.errors {
+		io.WriteString(out, "\t"+msg+"\n")
 	}
 }
