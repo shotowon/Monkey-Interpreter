@@ -187,3 +187,31 @@ func (p *Parser) parseIfExpression() ast.Expression {
 
 	return expr
 }
+
+func (p *Parser) parseFunctionParams() []*ast.ID {
+	identifiers := []*ast.ID{}
+
+	if p.peekToken.Type == token.RPAREN {
+		p.nextToken()
+		return identifiers
+	}
+
+	p.nextToken()
+
+	id := &ast.ID{Token: p.currToken, Value: p.currToken.Literal}
+	identifiers = append(identifiers, id)
+
+	for p.peekToken.Type == token.COMMA {
+		p.nextToken()
+		p.nextToken()
+
+		id := &ast.ID{Token: p.currToken, Value: p.currToken.Literal}
+		identifiers = append(identifiers, id)
+	}
+
+	if !p.expectPeek(token.RPAREN) {
+		return nil
+	}
+
+	return identifiers
+}
