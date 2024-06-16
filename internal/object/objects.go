@@ -25,3 +25,13 @@ func (b *Boolean) Inspect() string {
 func (b *Boolean) Type() ObjectType {
 	return T_BOOL
 }
+
+type Null struct{}
+
+func (n *Null) Inspect() string {
+	return "null"
+}
+
+func (n *Null) Type() ObjectType {
+	return T_NULL
+}
