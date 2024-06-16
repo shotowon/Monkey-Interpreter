@@ -2,6 +2,7 @@ package parser
 
 import (
 	"fmt"
+	"io"
 	"monkey/internal/ast"
 	"monkey/internal/lexer"
 	"monkey/internal/token"
@@ -130,4 +131,13 @@ func (p *Parser) currPrecedence() Precedence {
 	}
 
 	return LOWEST
+}
+
+func (p *Parser) PrintErrors(out io.Writer) {
+	if len(p.errors) != 0 {
+		io.WriteString(out, "PARSER ERRORS:\n")
+		for _, msg := range p.errors {
+			io.WriteString(out, "\t"+msg+"\n")
+		}
+	}
 }
