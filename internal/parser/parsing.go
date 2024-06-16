@@ -251,7 +251,7 @@ func (p *Parser) parseCallArgs() []ast.Expression {
 		args = append(args, p.parseExpression(LOWEST))
 	}
 
-	if p.peekToken.Type != token.RPAREN {
+	if !p.expectPeek(token.RPAREN) {
 		return nil
 	}
 
