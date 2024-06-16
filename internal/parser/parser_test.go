@@ -486,6 +486,38 @@ func TestDebugging(t *testing.T) {
 	})
 }
 
+func TestFunctionParamParsing(t *testing.T) {
+	type funcParamsParseTest struct {
+		input          string
+		expectedParams []string
+	}
+
+	tests := []funcParamsParseTest{
+		{input: "fn() {};", expectedParams: []string{}},
+		{input: "fn(x) {};", expectedParams: []string{"x"}},
+		{input: "fn(x, y, z) {};", expectedParams: []string{"x", "y", "z"}},
+	}
+
+	for _, tt := range tests {
+		l := lexer.New(tt.input)
+		p := parser.New(l)
+		program := p.ParseProgram()
+		checkParserErrors(t, p)
+
+		stmt := program.Statements[0].(*ast.ExpressionStatement)
+		fn := stmt.Expression.(*ast.FunctionLiteral)
+
+		if len(tt.expectedParams) != len(fn.Params) {
+			t.Errorf("fn.Params does not contain %d. got=%d",
+				len(tt.expectedParams), len(fn.Params))
+		}
+
+		for i, id := range fn.Params {
+			testLiteralExpr(t, id, tt.expectedParams[i])
+		}
+	}
+}
+
 func testLetStatement(t *testing.T, s ast.Statement, name string) bool {
 	if s.TokenLiteral() != "let" {
 		t.Errorf("s.TokenLiteral() is not let. got=%s", s.TokenLiteral())
