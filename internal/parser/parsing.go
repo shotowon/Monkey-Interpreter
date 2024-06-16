@@ -175,5 +175,15 @@ func (p *Parser) parseIfExpression() ast.Expression {
 
 	expr.Consequence = p.parseBlockStatement()
 
+	if p.peekToken.Type == token.ELSE {
+		p.nextToken()
+
+		if !p.expectPeek(token.LBRACE) {
+			return nil
+		}
+
+		expr.Alternative = p.parseBlockStatement()
+	}
+
 	return expr
 }
