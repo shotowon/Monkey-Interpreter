@@ -188,6 +188,24 @@ func (p *Parser) parseIfExpression() ast.Expression {
 	return expr
 }
 
+func (p *Parser) parseFunctionLiteral() ast.Expression {
+	fn := &ast.FunctionLiteral{Token: p.currToken}
+
+	if !p.expectPeek(token.LPAREN) {
+		return nil
+	}
+
+	fn.Params = p.parseFunctionParams()
+
+	if !p.expectPeek(token.LBRACE) {
+		return nil
+	}
+
+	fn.Body = p.parseBlockStatement()
+
+	return fn
+}
+
 func (p *Parser) parseFunctionParams() []*ast.ID {
 	identifiers := []*ast.ID{}
 
