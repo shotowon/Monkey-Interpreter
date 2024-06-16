@@ -413,6 +413,52 @@ func TestStatementsParsing(t *testing.T) {
 				t.Errorf("expr.Alternative is not nil. got=%+v", expr.Alternative)
 			}
 		})
+		t.Run("Test function literal parsing", func(t *testing.T) {
+			input := `fn(x, y) { x + y; }`
+
+			l := lexer.New(input)
+			p := parser.New(l)
+			program := p.ParseProgram()
+			checkParserErrors(t, p)
+
+			if len(program.Statements) != 1 {
+				t.Fatalf("program.Statements does not contain %d statements. got=%d",
+					1, len(program.Statements))
+			}
+
+			stmt, ok := program.Statements[0].(*ast.ExpressionStatement)
+			if !ok {
+				t.Fatalf("program.Statements[0] is not *ast.ExpressionStatement. got=%T",
+					program.Statements[0])
+			}
+
+			function, ok := stmt.Expression.(*ast.FunctionLiteral)
+			if !ok {
+				t.Fatalf("stmt.Expression is not *ast.FunctionLiteral. got=%T",
+					stmt.Expression)
+			}
+
+			if len(function.Params) != 2 {
+				t.Fatalf("function.Params does not contain %d parameters. got=%d",
+					2, len(function.Params))
+			}
+
+			testLiteralExpr(t, function.Params[0], "x")
+			testLiteralExpr(t, function.Params[1], "y")
+
+			if len(function.Body.Statements) != 1 {
+				t.Fatalf("function.Body.Statements does not contain %d statements. got=%d",
+					1, len(function.Body.Statements))
+			}
+
+			bodyStmt, ok := function.Body.Statements[0].(*ast.ExpressionStatement)
+			if !ok {
+				t.Fatalf("function.Body.Statements[0] is not *ast.ExpressionStatement. got=%T",
+					function.Body.Statements[0])
+			}
+
+			testInfixExpr(t, bodyStmt.Expression, "x", "+", "y")
+		})
 	})
 }
 
