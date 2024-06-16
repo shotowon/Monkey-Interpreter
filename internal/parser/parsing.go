@@ -257,3 +257,9 @@ func (p *Parser) parseCallArgs() []ast.Expression {
 
 	return args
 }
+
+func (p *Parser) parseCallExpression(fn ast.Expression) ast.Expression {
+	exp := &ast.CallExpression{Token: p.currToken, Function: fn}
+	exp.Arguments = p.parseCallArgs()
+	return exp
+}
