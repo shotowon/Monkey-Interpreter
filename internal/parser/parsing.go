@@ -58,7 +58,7 @@ func (p *Parser) parseExpressionStatement() ast.Statement {
 }
 
 func (p *Parser) noPrefixParseFnErr(t token.TokenType) {
-	p.errors = append(p.errors, fmt.Sprintf("no prefix parse function for %d found", t))
+	p.errors = append(p.errors, fmt.Sprintf("no prefix parse function for %s found", t.String()))
 }
 
 func (p *Parser) parseExpression(precedence Precedence) ast.Expression {
