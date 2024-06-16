@@ -370,6 +370,49 @@ func TestStatementsParsing(t *testing.T) {
 				}
 			}
 		})
+		t.Run("If expression parsing", func(t *testing.T) {
+			input := `if (x > y) { x }`
+
+			l := lexer.New(input)
+			p := parser.New(l)
+			program := p.ParseProgram()
+			checkParserErrors(t, p)
+
+			if len(program.Statements) != 1 {
+				t.Fatalf("program.Statements does not containt %d statements. got=%d", 1, len(program.Statements))
+			}
+
+			stmt, ok := program.Statements[0].(*ast.ExpressionStatement)
+			if !ok {
+				t.Fatalf("program.Statements[0] is not *ast.Expression. got=%T", program.Statements[0])
+			}
+
+			expr, ok := stmt.Expression.(*ast.IfExpression)
+			if !ok {
+				t.Fatalf("stmt.Expression is not *ast.IfExpression. got=%T", stmt.Expression)
+			}
+
+			if !testInfixExpr(t, expr.Condition, "x", ">", "y") {
+				return
+			}
+
+			if len(expr.Consequence.Statements) != 1 {
+				t.Errorf("expr.Consequence.Statements does not contain %d statements. got=%d", 1, len(expr.Consequence.Statements))
+			}
+
+			consequence, ok := expr.Consequence.Statements[0].(*ast.ExpressionStatement)
+			if !ok {
+				t.Fatalf("expr.Consequence.Statements[0] is not *ast.ExpressionStatement. got=%T", expr.Consequence.Statements[0])
+			}
+
+			if !testID(t, consequence.Expression, "x") {
+				return
+			}
+
+			if expr.Alternative != nil {
+				t.Errorf("expr.Alternative is not nil. got=%+v", expr.Alternative)
+			}
+		})
 	})
 }
 
