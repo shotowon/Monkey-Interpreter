@@ -41,35 +41,35 @@ func TestStatementsParsing(t *testing.T) {
 	})
 
 	t.Run("Let statement", func(t *testing.T) {
-		input := `
-		let foo = 5;
-		let bar = 10;
-		let baz = 32131;
-		`
-
-		l := lexer.New(input)
-		p := parser.New(l)
-
-		program := p.ParseProgram()
-		if program == nil {
-			t.Fatalf("p.ParseProgram() returned nil")
+		type letStatementTesting struct {
+			input         string
+			expectedID    string
+			expectedValue interface{}
 		}
 
-		if len(program.Statements) != 3 {
-			t.Fatalf("program.Statements do not contain 3 statements. got=%d", len(program.Statements))
+		tests := []letStatementTesting{
+			{"let foo = 5;", "foo", 5},
+			{"let bar = true;", "bar", true},
+			{"let baz = y;", "baz", "y"},
 		}
 
-		tests := []struct {
-			expectedID string
-		}{
-			{"foo"},
-			{"bar"},
-			{"baz"},
-		}
+		for _, tt := range tests {
+			l := lexer.New(tt.input)
+			p := parser.New(l)
+			program := p.ParseProgram()
+			checkParserErrors(t, p)
 
-		for i, test := range tests {
-			stmt := program.Statements[i]
-			if !testLetStatement(t, stmt, test.expectedID) {
+			if len(program.Statements) != 1 {
+				t.Fatalf("program.Statements does not contain %d statements. got=%d", 1, len(program.Statements))
+			}
+
+			stmt := program.Statements[0]
+			if !testLetStatement(t, stmt, tt.expectedID) {
+				return
+			}
+
+			val := stmt.(*ast.LetStatement).Value
+			if !testLiteralExpr(t, val, tt.expectedValue) {
 				return
 			}
 		}
