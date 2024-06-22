@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"io"
+	"monkey/internal/eval"
 	"monkey/internal/lexer"
 	"monkey/internal/parser"
 	"strings"
@@ -35,6 +36,9 @@ func Start(in io.Reader, out io.Writer) {
 			continue
 		}
 
-		io.WriteString(out, program.String()+"\n")
+		eval := eval.Eval(program)
+		if eval != nil {
+			io.WriteString(out, eval.Inspect()+"\n")
+		}
 	}
 }
