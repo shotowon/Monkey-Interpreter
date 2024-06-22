@@ -34,6 +34,10 @@ func TestEval(t *testing.T) {
 		tests := []testBoolExpr{
 			{input: "true", expected: true},
 			{input: "false", expected: false},
+			{input: "!true", expected: false},
+			{input: "!false", expected: true},
+			{input: "!!true", expected: true},
+			{input: "!!false", expected: false},
 		}
 
 		for _, tt := range tests {
