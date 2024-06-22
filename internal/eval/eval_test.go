@@ -24,6 +24,23 @@ func TestEval(t *testing.T) {
 			testIntegerObject(t, eval, tt.expected)
 		}
 	})
+
+	t.Run("test eval boolean expression", func(t *testing.T) {
+		type testBoolExpr struct {
+			input    string
+			expected bool
+		}
+
+		tests := []testBoolExpr{
+			{input: "true", expected: true},
+			{input: "false", expected: false},
+		}
+
+		for _, tt := range tests {
+			eval := testEval(tt.input)
+			testBooleanObject(t, eval, tt.expected)
+		}
+	})
 }
 
 func testEval(input string) object.Object {
