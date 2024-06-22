@@ -20,6 +20,19 @@ func Eval(node ast.Node) object.Object {
 	return nil
 }
 
+func evalBangOpExpression(right object.Object) object.Object {
+	switch right {
+	case TRUE:
+		return FALSE
+	case FALSE:
+		return TRUE
+	case NULL:
+		return TRUE
+	}
+
+	return FALSE
+}
+
 func evalStatements(stmts []ast.Statement) object.Object {
 	var result object.Object
 
