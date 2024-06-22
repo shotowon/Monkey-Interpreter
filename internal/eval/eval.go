@@ -49,6 +49,18 @@ func evalIntegerInfixExpression(op string, left, right object.Object) object.Obj
 		return &object.Integer{Value: leftVal * rightVal}
 	case "/":
 		return &object.Integer{Value: leftVal / rightVal}
+	case "<":
+		return boolToObj(leftVal < rightVal)
+	case ">":
+		return boolToObj(leftVal > rightVal)
+	case "<=":
+		return boolToObj(leftVal <= rightVal)
+	case ">=":
+		return boolToObj(leftVal >= rightVal)
+	case "==":
+		return boolToObj(leftVal == rightVal)
+	case "!=":
+		return boolToObj(leftVal != rightVal)
 	}
 
 	return NULL
