@@ -20,6 +20,9 @@ func TestEval(t *testing.T) {
 			{input: "10", expected: 10},
 			{input: "-5", expected: -5},
 			{input: "-51", expected: -51},
+			{input: "-51 + 10", expected: -41},
+			{input: "51 + 10", expected: 61},
+			{input: "-51 + 61", expected: 10},
 		}
 
 		for _, tt := range tests {
