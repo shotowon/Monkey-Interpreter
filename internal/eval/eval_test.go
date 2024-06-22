@@ -17,6 +17,9 @@ func TestEval(t *testing.T) {
 
 		tests := []testIntExpr{
 			{input: "5", expected: 5},
+			{input: "10", expected: 10},
+			{input: "-5", expected: -5},
+			{input: "-51", expected: -51},
 		}
 
 		for _, tt := range tests {
