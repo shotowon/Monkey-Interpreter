@@ -23,6 +23,15 @@ func Eval(node ast.Node) object.Object {
 	return nil
 }
 
+func evalInfixExpression(op string, left, right object.Object) object.Object {
+	switch {
+	case left.Type() == object.T_INTEGER && right.Type() == object.T_INTEGER:
+		return evalIntegerInfixExpression(op, left, right)
+	}
+
+	return NULL
+}
+
 func evalIntegerInfixExpression(op string, left, right object.Object) object.Object {
 	leftVal := left.(*object.Integer).Value
 	rightVal := right.(*object.Integer).Value
