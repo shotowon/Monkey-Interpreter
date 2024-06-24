@@ -64,6 +64,33 @@ func TestEval(t *testing.T) {
 			testBooleanObject(t, eval, tt.expected)
 		}
 	})
+
+	t.Run("test eval if expression", func(t *testing.T) {
+		type ifTest struct {
+			input    string
+			expected interface{}
+		}
+
+		tests := []ifTest{
+			{"if (true) { 10 }", 10},
+			{"if (false) { 10 }", nil},
+			{"if (1) { 10 }", 10},
+			{"if (1 < 2) { 10 }", 10},
+			{"if (1 > 2) { 10 }", nil},
+			{"if (1 > 2) { 10 } else { 20 }", 20},
+			{"if (1 < 2) { 10 } else { 20 }", 10},
+		}
+
+		for _, tt := range tests {
+			eval := testEval(tt.input)
+			int, ok := tt.expected.(int)
+			if !ok {
+				testIntegerObject(t, eval, int64(int))
+			} else {
+				testNullObject(t, eval)
+			}
+		}
+	})
 }
 
 func testEval(input string) object.Object {
