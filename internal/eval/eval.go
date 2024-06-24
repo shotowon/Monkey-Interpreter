@@ -22,6 +22,8 @@ func Eval(node ast.Node) object.Object {
 		return evalInfixExpression(node.Operator, left, right)
 	case *ast.IntegerLiteral:
 		return &object.Integer{Value: node.Value}
+	case *ast.BlockStatement:
+		return evalStatements(node.Statements)
 	}
 
 	return nil
