@@ -84,7 +84,7 @@ func TestEval(t *testing.T) {
 		for _, tt := range tests {
 			eval := testEval(tt.input)
 			int, ok := tt.expected.(int)
-			if !ok {
+			if ok {
 				testIntegerObject(t, eval, int64(int))
 			} else {
 				testNullObject(t, eval)
