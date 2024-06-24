@@ -24,6 +24,8 @@ func Eval(node ast.Node) object.Object {
 		return &object.Integer{Value: node.Value}
 	case *ast.BlockStatement:
 		return evalStatements(node.Statements)
+	case *ast.IfExpression:
+		return evalIfExpression(node)
 	}
 
 	return nil
@@ -113,4 +115,15 @@ func evalStatements(stmts []ast.Statement) object.Object {
 	}
 
 	return result
+}
+
+func evalIfExpression(ie *ast.IfExpression) object.Object {
+	cond := Eval(ie.Condition)
+	if isTrue(cond) {
+		return Eval(ie.Consequence)
+	} else if ie.Alternative != nil {
+		return Eval(ie.Alternative)
+	}
+
+	return NULL
 }
