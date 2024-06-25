@@ -91,6 +91,21 @@ func TestEval(t *testing.T) {
 			}
 		}
 	})
+	t.Run("test eval return <int> statement", func(t *testing.T) {
+		type returnTest struct {
+			input    string
+			expected int64
+		}
+
+		tests := []returnTest{
+			{"return 10;", 10},
+		}
+
+		for _, tt := range tests {
+			eval := testEval(tt.input)
+			testIntegerObject(t, eval, tt.expected)
+		}
+	})
 }
 
 func testEval(input string) object.Object {
