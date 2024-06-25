@@ -115,6 +115,10 @@ func evalStatements(stmts []ast.Statement) object.Object {
 
 	for _, stmt := range stmts {
 		result = Eval(stmt)
+
+		if ret, ok := result.(*object.ReturnValue); ok {
+			return ret.Value
+		}
 	}
 
 	return result
