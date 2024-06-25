@@ -131,27 +131,27 @@ func TestEval(t *testing.T) {
 		tests := []errTest{
 			{
 				"5 + true;",
-				"type mismatch: INTEGER + BOOLEAN",
+				"type mismatch: INTEGER + BOOL",
 			},
 			{
 				"5 + true; 5;",
-				"type mismatch: INTEGER + BOOLEAN",
+				"type mismatch: INTEGER + BOOL",
 			},
 			{
 				"-true",
-				"unknown operator: -BOOLEAN",
+				"unknown operator: -BOOL",
 			},
 			{
 				"true + false;",
-				"unknown operator: BOOLEAN + BOOLEAN",
+				"unknown operator: BOOL + BOOL",
 			},
 			{
 				"5; true + false; 5",
-				"unknown operator: BOOLEAN + BOOLEAN",
+				"unknown operator: BOOL + BOOL",
 			},
 			{
 				"if (10 > 1) { true + false; }",
-				"unknown operator: BOOLEAN + BOOLEAN",
+				"unknown operator: BOOL + BOOL",
 			},
 			{
 				`
@@ -163,7 +163,7 @@ func TestEval(t *testing.T) {
 					return 1;
 				}
 				`,
-				"unknown operator: BOOLEAN + BOOLEAN",
+				"unknown operator: BOOL + BOOL",
 			},
 		}
 
