@@ -20,3 +20,11 @@ func isTrue(obj object.Object) bool {
 		return true
 	}
 }
+
+func isErr(obj object.Object) bool {
+	if obj != nil {
+		return obj.Type() == object.T_ERROR
+	}
+
+	return false
+}
