@@ -47,6 +47,8 @@ func Eval(node ast.Node, env *object.Environment) object.Object {
 		if len(args) == 1 && isErr(args[0]) {
 			return args[0]
 		}
+
+		return applyFunc(function, args)
 	case *ast.IntegerLiteral:
 		return &object.Integer{Value: node.Value}
 	case *ast.BlockStatement:
