@@ -33,6 +33,10 @@ func Eval(node ast.Node, env *object.Environment) object.Object {
 		}
 
 		return evalInfixExpression(node.Operator, left, right)
+	case *ast.FunctionLiteral:
+		params := node.Params
+		body := node.Body
+		return &object.Function{Params: params, Body: body, Env: env}
 	case *ast.IntegerLiteral:
 		return &object.Integer{Value: node.Value}
 	case *ast.BlockStatement:
