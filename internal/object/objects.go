@@ -35,3 +35,7 @@ func (n *Null) Inspect() string {
 func (n *Null) Type() ObjectType {
 	return T_NULL
 }
+
+type ReturnValue struct {
+	Value Object
+}

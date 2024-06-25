@@ -5,4 +5,5 @@ const (
 	T_INTEGER
 	T_BOOL
 	T_NULL
+	T_RETURN_VALUE
 )

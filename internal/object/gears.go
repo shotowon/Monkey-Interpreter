@@ -8,6 +8,8 @@ func (o ObjectType) String() string {
 		return "BOOL"
 	case T_NULL:
 		return "NULL"
+	case T_RETURN_VALUE:
+		return "RETURN VALUE"
 	}
 
 	return "NONE"
