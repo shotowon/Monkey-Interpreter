@@ -164,6 +164,15 @@ func TestEval(t *testing.T) {
 			testIntegerObject(t, testEval(tt.input), tt.expected)
 		}
 	})
+	t.Run("test closures", func(t *testing.T) {
+		input := `
+		let newAdder = fn(x) {
+			fn(y) { x + y };
+		};
+		let addTwo = newAdder(2);
+		addTwo(2);`
+		testIntegerObject(t, testEval(input), 4)
+	})
 	t.Run("test error handling", func(t *testing.T) {
 		type errTest struct {
 			input           string
