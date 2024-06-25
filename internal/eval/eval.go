@@ -43,9 +43,11 @@ func evalInfixExpression(op string, left, right object.Object) object.Object {
 		return boolToObj(left == right)
 	case op == "!=":
 		return boolToObj(left != right)
+	case left.Type() != right.Type():
+		return newError("type mismatch: %s %s %s", left.Type(), op, right.Type())
 	}
 
-	return NULL
+	return newError("uknown operator: %s %s %s", left.Type(), op, right.Type())
 }
 
 func evalIntegerInfixExpression(op string, left, right object.Object) object.Object {
@@ -75,7 +77,7 @@ func evalIntegerInfixExpression(op string, left, right object.Object) object.Obj
 		return boolToObj(leftVal != rightVal)
 	}
 
-	return NULL
+	return newError("unkown operator: %s %s %s", left.Type(), op, right.Type())
 }
 
 func evalPrefixExpression(operator string, right object.Object) object.Object {
@@ -86,12 +88,12 @@ func evalPrefixExpression(operator string, right object.Object) object.Object {
 		return evalMinusPrefixOpExpression(right)
 	}
 
-	return NULL
+	return newError("uknown operator: %s%s", operator, right.Type())
 }
 
 func evalMinusPrefixOpExpression(right object.Object) object.Object {
 	if right.Type() != object.T_INTEGER {
-		return NULL
+		return newError("unkown operator: -%s", right.Type())
 	}
 
 	value := right.(*object.Integer).Value
