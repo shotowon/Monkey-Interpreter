@@ -1,6 +1,7 @@
 package eval
 
 import (
+	"fmt"
 	"monkey/internal/ast"
 	"monkey/internal/object"
 )
@@ -161,4 +162,8 @@ func evalBlockStmt(b *ast.BlockStatement) object.Object {
 	}
 
 	return result
+}
+
+func newError(format string, args ...interface{}) *object.Error {
+	return &object.Error{Message: fmt.Sprintf(format, args...)}
 }
