@@ -139,7 +139,7 @@ func TestEval(t *testing.T) {
 			t.Fatalf("params is not 'x'. got=%q", fn.Params[0])
 		}
 
-		expectedBody := `(x + 2)`
+		expectedBody := `{ (x + 2) }`
 
 		if fn.Body.String() != expectedBody {
 			t.Fatalf("body is not %q. got=%q", expectedBody, fn.Body.String())
