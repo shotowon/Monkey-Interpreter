@@ -28,3 +28,13 @@ func isErr(obj object.Object) bool {
 
 	return false
 }
+
+func extendFunctionEnv(fn *object.Function, args []object.Object) *object.Environment {
+	env := object.NewEnclosedEnv(fn.Env)
+
+	for i := range fn.Params {
+		env.Set(fn.Params[i].Value, args[i])
+	}
+
+	return env
+}
