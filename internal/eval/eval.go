@@ -134,3 +134,17 @@ func evalIfExpression(ie *ast.IfExpression) object.Object {
 
 	return NULL
 }
+
+func evalProgram(p *ast.Program) object.Object {
+	var result object.Object
+
+	for _, stmt := range p.Statements {
+		result = Eval(stmt)
+
+		if ret, ok := result.(*object.ReturnValue); ok {
+			return ret.Value
+		}
+	}
+
+	return result
+}
