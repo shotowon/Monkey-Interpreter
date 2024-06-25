@@ -1,6 +1,11 @@
 package object
 
-import "fmt"
+import (
+	"bytes"
+	"fmt"
+	"monkey/internal/ast"
+	"strings"
+)
 
 type Integer struct {
 	Value int64
@@ -34,6 +39,31 @@ func (n *Null) Inspect() string {
 
 func (n *Null) Type() ObjectType {
 	return T_NULL
+}
+
+type Function struct {
+	Params []*ast.ID
+	Body   *ast.BlockStatement
+	Env    *Environment
+}
+
+func (f *Function) Type() ObjectType { return T_FUNCTION }
+func (f *Function) Inspect() string {
+	var out bytes.Buffer
+
+	params := make([]string, len(f.Params))
+	for i := range f.Params {
+		params[i] = f.Params[i].String()
+	}
+
+	out.WriteString("fn")
+	out.WriteString("(")
+	out.WriteString(strings.Join(params, ", "))
+	out.WriteString(") {\n")
+	out.WriteString(f.Body.String())
+	out.WriteString("\n}")
+
+	return out.String()
 }
 
 type ReturnValue struct {
