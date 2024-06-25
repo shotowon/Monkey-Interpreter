@@ -47,3 +47,10 @@ func (rv *ReturnValue) Inspect() string {
 func (rv *ReturnValue) Type() ObjectType {
 	return T_RETURN_VALUE
 }
+
+type Error struct {
+	Message string
+}
+
+func (e *Error) Type() ObjectType { return T_ERROR }
+func (e *Error) Inspect() string  { return "ERROR: " + e.Message }

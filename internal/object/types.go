@@ -6,4 +6,5 @@ const (
 	T_BOOL
 	T_NULL
 	T_RETURN_VALUE
+	T_ERROR
 )

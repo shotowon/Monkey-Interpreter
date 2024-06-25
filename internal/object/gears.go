@@ -10,6 +10,8 @@ func (o ObjectType) String() string {
 		return "NULL"
 	case T_RETURN_VALUE:
 		return "RETURN VALUE"
+	case T_ERROR:
+		return "ERROR"
 	}
 
 	return "NONE"
