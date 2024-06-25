@@ -181,6 +181,24 @@ func TestEval(t *testing.T) {
 			}
 		}
 	})
+
+	t.Run("test let statement", func(t *testing.T) {
+		type letTest struct {
+			input    string
+			expected int64
+		}
+
+		tests := []letTest{
+			{"let a = 5; a;", 5},
+			{"let a = 5 * 5; a;", 25},
+			{"let a = 5; let b = a; b;", 5},
+			{"let a = 5; let b = a; let c = a + b + 5; c;", 15},
+		}
+
+		for _, tt := range tests {
+			testIntegerObject(t, testEval(tt.input), tt.expected)
+		}
+	})
 }
 
 func testEval(input string) object.Object {
