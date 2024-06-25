@@ -122,6 +122,29 @@ func TestEval(t *testing.T) {
 			testIntegerObject(t, eval, tt.expected)
 		}
 	})
+	t.Run("test function object", func(t *testing.T) {
+		input := `fn(x) { x + 2; };`
+
+		eval := testEval(input)
+		fn, ok := eval.(*object.Function)
+		if !ok {
+			t.Fatalf("eval is not *object.Function. got=%T (%+v)", eval, eval)
+		}
+
+		if len(fn.Params) != 1 {
+			t.Fatalf("function has wrong number of params. got=%d expected=%d", len(fn.Params), 1)
+		}
+
+		if fn.Params[0].String() != "x" {
+			t.Fatalf("params is not 'x'. got=%q", fn.Params[0])
+		}
+
+		expectedBody := `(x + 2)`
+
+		if fn.Body.String() != expectedBody {
+			t.Fatalf("body is not %q. got=%q", expectedBody, fn.Body.String())
+		}
+	})
 	t.Run("test error handling", func(t *testing.T) {
 		type errTest struct {
 			input           string
