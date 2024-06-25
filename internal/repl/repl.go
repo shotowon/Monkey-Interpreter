@@ -16,6 +16,7 @@ const Prompt = ">> "
 func Start(in io.Reader, out io.Writer) {
 	scanner := bufio.NewScanner(in)
 
+	env := object.NewEnv()
 	for {
 		fmt.Printf(Prompt)
 		scanned := scanner.Scan()
@@ -37,7 +38,6 @@ func Start(in io.Reader, out io.Writer) {
 			continue
 		}
 
-		env := object.NewEnv()
 		eval := eval.Eval(program, env)
 		if eval != nil {
 			io.WriteString(out, eval.Inspect()+"\n")
