@@ -6,6 +6,7 @@ import (
 	"io"
 	"monkey/internal/eval"
 	"monkey/internal/lexer"
+	"monkey/internal/object"
 	"monkey/internal/parser"
 	"strings"
 )
@@ -36,7 +37,8 @@ func Start(in io.Reader, out io.Writer) {
 			continue
 		}
 
-		eval := eval.Eval(program)
+		env := object.NewEnv()
+		eval := eval.Eval(program, env)
 		if eval != nil {
 			io.WriteString(out, eval.Inspect()+"\n")
 		}
