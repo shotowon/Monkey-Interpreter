@@ -39,6 +39,13 @@ func Eval(node ast.Node, env *object.Environment) object.Object {
 		return evalBlockStmt(node, env)
 	case *ast.IfExpression:
 		return evalIfExpression(node, env)
+	case *ast.LetStatement:
+		val := Eval(node.Value, env)
+		if isErr(val) {
+			return val
+		}
+
+		env.Set(node.Name.Value, val)
 	case *ast.ReturnStatement:
 		val := Eval(node.ReturnValue, env)
 		if isErr(val) {
