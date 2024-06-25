@@ -217,3 +217,18 @@ func evalID(node *ast.ID, env *object.Environment) object.Object {
 
 	return val
 }
+
+func evalExpressions(exprs []ast.Expression, env *object.Environment) []object.Object {
+	result := make([]object.Object, len(exprs))
+
+	for i := range exprs {
+		eval := Eval(exprs[i], env)
+		if isErr(eval) {
+			return []object.Object{eval}
+		}
+
+		result[i] = eval
+	}
+
+	return result
+}
