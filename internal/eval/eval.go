@@ -53,6 +53,8 @@ func Eval(node ast.Node, env *object.Environment) object.Object {
 		}
 
 		return &object.ReturnValue{Value: val}
+	case *ast.ID:
+		return evalID(node, env)
 	}
 
 	return nil
@@ -201,4 +203,13 @@ func evalBlockStmt(b *ast.BlockStatement, env *object.Environment) object.Object
 
 func newError(format string, args ...interface{}) *object.Error {
 	return &object.Error{Message: fmt.Sprintf(format, args...)}
+}
+
+func evalID(node *ast.ID, env *object.Environment) object.Object {
+	val, ok := env.Get(node.Value)
+	if !ok {
+		return newError("identifier not found: " + node.Value)
+	}
+
+	return val
 }
