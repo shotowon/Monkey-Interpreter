@@ -148,3 +148,17 @@ func evalProgram(p *ast.Program) object.Object {
 
 	return result
 }
+
+func evalBlockStmt(b *ast.BlockStatement) object.Object {
+	var result object.Object
+
+	for _, stmt := range b.Statements {
+		result = Eval(stmt)
+
+		if result != nil && result.Type() == object.T_RETURN_VALUE {
+			return result
+		}
+	}
+
+	return result
+}
