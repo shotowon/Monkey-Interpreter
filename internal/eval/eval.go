@@ -37,6 +37,16 @@ func Eval(node ast.Node, env *object.Environment) object.Object {
 		params := node.Params
 		body := node.Body
 		return &object.Function{Params: params, Body: body, Env: env}
+	case *ast.CallExpression:
+		function := Eval(node.Function, env)
+		if isErr(function) {
+			return function
+		}
+
+		args := evalExpressions(node.Arguments, env)
+		if len(args) == 1 && isErr(args[0]) {
+			return args[0]
+		}
 	case *ast.IntegerLiteral:
 		return &object.Integer{Value: node.Value}
 	case *ast.BlockStatement:
