@@ -165,6 +165,10 @@ func TestEval(t *testing.T) {
 				`,
 				"unknown operator: BOOL + BOOL",
 			},
+			{
+				"foobar",
+				"identifier not found: foobar",
+			},
 		}
 
 		for _, tt := range tests {
