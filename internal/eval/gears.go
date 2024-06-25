@@ -29,6 +29,14 @@ func isErr(obj object.Object) bool {
 	return false
 }
 
+func unwrapReturnValue(obj object.Object) object.Object {
+	if ret, ok := obj.(*object.ReturnValue); ok {
+		return ret.Value
+	}
+
+	return obj
+}
+
 func extendFunctionEnv(fn *object.Function, args []object.Object) *object.Environment {
 	env := object.NewEnclosedEnv(fn.Env)
 
