@@ -212,6 +212,10 @@ func (p *Parser) parseFunctionLiteral() ast.Expression {
 	return fn
 }
 
+func (p *Parser) parseStringLiteral() ast.Expression {
+	return &ast.StringLiteral{Token: p.currToken, Value: p.currToken.Literal}
+}
+
 func (p *Parser) parseFunctionParams() []*ast.ID {
 	identifiers := []*ast.ID{}
 
