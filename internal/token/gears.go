@@ -74,6 +74,8 @@ func (t TokenType) String() string {
 		return "else"
 	case RETURN:
 		return "return"
+	case STRING:
+		return "STRING"
 	default:
 		return "UNKNOWN"
 	}

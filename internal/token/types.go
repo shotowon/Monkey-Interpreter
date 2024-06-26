@@ -38,4 +38,6 @@ const (
 	IF     // if
 	ELSE   // else
 	RETURN // return
+
+	STRING // string
 )
