@@ -8,4 +8,5 @@ const (
 	T_FUNCTION
 	T_RETURN_VALUE
 	T_ERROR
+	T_STRING
 )

@@ -12,6 +12,8 @@ func (o ObjectType) String() string {
 		return "RETURN VALUE"
 	case T_ERROR:
 		return "ERROR"
+	case T_STRING:
+		return "STRING"
 	}
 
 	return "NONE"
