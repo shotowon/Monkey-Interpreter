@@ -268,6 +268,20 @@ func TestEval(t *testing.T) {
 			t.Errorf("string has wrong value. got=%q", str.Value)
 		}
 	})
+
+	t.Run("test string concatination", func(t *testing.T) {
+		input := `"Hello" + " " + "World"`
+
+		eval := testEval(input)
+		str, ok := eval.(*object.String)
+		if !ok {
+			t.Fatalf("eval is not *object.String. got=%T (%+v)", eval, eval)
+		}
+
+		if str.Value != "Hello World" {
+			t.Errorf("String has wrong value. got=%q", str.Value)
+		}
+	})
 }
 
 func testEval(input string) object.Object {
