@@ -254,6 +254,20 @@ func TestEval(t *testing.T) {
 			testIntegerObject(t, testEval(tt.input), tt.expected)
 		}
 	})
+
+	t.Run("test string literal", func(t *testing.T) {
+		input := `"Hello World"`
+
+		eval := testEval(input)
+		str, ok := eval.(*object.String)
+		if !ok {
+			t.Fatalf("eval object is not *object.String. got=%T", eval)
+		}
+
+		if str.Value != "Hello World" {
+			t.Errorf("string has wrong value. got=%q", str.Value)
+		}
+	})
 }
 
 func testEval(input string) object.Object {
