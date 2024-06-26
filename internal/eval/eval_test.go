@@ -185,6 +185,10 @@ func TestEval(t *testing.T) {
 				"type mismatch: INTEGER + BOOL",
 			},
 			{
+				`"Hello" - "World"`,
+				"unknown operator: STRING - STRING",
+			},
+			{
 				"5 + true; 5;",
 				"type mismatch: INTEGER + BOOL",
 			},
