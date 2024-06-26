@@ -11,7 +11,7 @@ type nextTokenExpectedValue struct {
 	expectedLiteral string
 }
 
-func TestNextToken1(t *testing.T) {
+func TestNextToken(t *testing.T) {
 	tests := []struct {
 		name     string
 		input    string
