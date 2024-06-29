@@ -30,14 +30,17 @@ func isErr(obj object.Object) bool {
 }
 
 func applyFunc(fn object.Object, args []object.Object) object.Object {
-	function, ok := fn.(*object.Function)
-	if !ok {
+	switch fn := fn.(type) {
+	case *object.Function:
+		extEnv := extendFunctionEnv(fn, args)
+		eval := Eval(fn.Body, extEnv)
+		return unwrapReturnValue(eval)
+	case *object.Builtin:
+		return fn.Fn(args...)
+	default:
 		return newError("not a function: %s", fn.Type())
 	}
 
-	extEnv := extendFunctionEnv(function, args)
-	eval := Eval(function.Body, extEnv)
-	return unwrapReturnValue(eval)
 }
 
 func unwrapReturnValue(obj object.Object) object.Object {
