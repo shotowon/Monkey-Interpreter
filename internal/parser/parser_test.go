@@ -546,6 +546,28 @@ func TestStatementsParsing(t *testing.T) {
 			testInfixExpr(t, literal.Elements[1], 2, "*", 3)
 			testInfixExpr(t, literal.Elements[2], 3, "+", 3)
 		})
+		t.Run("test index expressions", func(t *testing.T) {
+			input := `arr[1 + 1]`
+
+			l := lexer.New(input)
+			p := parser.New(l)
+			program := p.ParseProgram()
+			checkParserErrors(t, p)
+
+			stmt := program.Statements[0].(*ast.ExpressionStatement)
+			index, ok := stmt.Expression.(*ast.IndexExpression)
+			if !ok {
+				t.Fatalf("stmt.Expression is not *ast.IndexExpression. got=%T", stmt.Expression)
+			}
+
+			if !testID(t, index.Left, "arr") {
+				return
+			}
+
+			if !testInfixExpr(t, index.Index, 1, "+", 1) {
+				return
+			}
+		})
 	})
 }
 
