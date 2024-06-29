@@ -304,6 +304,62 @@ func TestEval(t *testing.T) {
 		testIntegerObject(t, result.Elements[1], 6)
 		testIntegerObject(t, result.Elements[2], 6)
 	})
+
+	t.Run("test index expression", func(t *testing.T) {
+		type indexTest struct {
+			input    string
+			expected interface{}
+		}
+		tests := []indexTest{
+			{
+				"[1, 2, 3][0]",
+				1,
+			},
+			{
+				"[1, 2, 3][1]",
+				2,
+			},
+			{
+				"[1, 2, 3][2]",
+				3,
+			},
+			{
+				"[1, 2, 3][1 + 1];",
+				3,
+			},
+			{
+				"let myArray = [1, 2, 3]; myArray[2];",
+				3,
+			},
+			{
+				"let myArray = [1, 2, 3]; myArray[0] + myArray[1] + myArray[2];",
+				6,
+			},
+			{
+				"let myArray = [1, 2, 3]; let i = myArray[0]; myArray[i]",
+				2,
+			},
+			{
+				"[1, 2, 3][3]",
+				nil,
+			},
+			{
+				"[1, 2, 3][-1]",
+				nil,
+			},
+		}
+
+		for _, tt := range tests {
+			eval := testEval(tt.input)
+
+			switch expected := tt.expected.(type) {
+			case int:
+				testIntegerObject(t, eval, int64(expected))
+			default:
+				testNullObject(t, eval)
+			}
+		}
+	})
 }
 
 func TestBuiltinFunctions(t *testing.T) {
