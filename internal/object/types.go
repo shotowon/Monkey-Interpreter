@@ -9,4 +9,5 @@ const (
 	T_RETURN_VALUE
 	T_ERROR
 	T_STRING
+	T_BUILTIN
 )

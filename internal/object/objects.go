@@ -85,6 +85,15 @@ func (rv *ReturnValue) Type() ObjectType {
 	return T_RETURN_VALUE
 }
 
+type BuiltinFunc func(args ...Object) Object
+
+type Builtin struct {
+	Fn BuiltinFunc
+}
+
+func (b *Builtin) Type() ObjectType { return T_BUILTIN }
+func (b *Builtin) Inspect() string  { return "builtin function" }
+
 type Error struct {
 	Message string
 }
