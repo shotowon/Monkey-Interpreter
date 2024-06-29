@@ -13,6 +13,7 @@ const (
 	PRODUCT     // *
 	PREFIX      // -X or !X
 	CALL        // func()
+	INDEX       // arr[index]
 )
 
 var precedences = map[token.TokenType]Precedence{
@@ -25,4 +26,5 @@ var precedences = map[token.TokenType]Precedence{
 	token.SLASH:    PRODUCT,
 	token.ASTERISK: PRODUCT,
 	token.LPAREN:   CALL,
+	token.LBRACKET: INDEX,
 }
