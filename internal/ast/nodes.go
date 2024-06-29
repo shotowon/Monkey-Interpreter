@@ -168,21 +168,13 @@ type FunctionLiteral struct {
 func (fl *FunctionLiteral) expressionNode()      {}
 func (fl *FunctionLiteral) TokenLiteral() string { return fl.Token.Literal }
 func (fl *FunctionLiteral) String() string {
-	var out bytes.Buffer
-
 	params := make([]string, len(fl.Params))
 
 	for i, p := range fl.Params {
 		params[i] = p.String()
 	}
 
-	out.WriteString(fl.Token.Literal)
-	out.WriteString("(")
-	out.WriteString(strings.Join(params, ", "))
-	out.WriteString(")")
-	out.WriteString(fl.Body.String())
-
-	return out.String()
+	return fl.Token.Literal + "(" + strings.Join(params, ", ") + ")" + fl.Body.String()
 }
 
 type CallExpression struct {
@@ -194,20 +186,13 @@ type CallExpression struct {
 func (ce *CallExpression) expressionNode()      {}
 func (ce *CallExpression) TokenLiteral() string { return ce.Token.Literal }
 func (ce *CallExpression) String() string {
-	var out bytes.Buffer
-
 	args := make([]string, len(ce.Arguments))
 
 	for i, arg := range ce.Arguments {
 		args[i] = arg.String()
 	}
 
-	out.WriteString(ce.Function.String())
-	out.WriteString("(")
-	out.WriteString(strings.Join(args, ", "))
-	out.WriteString(")")
-
-	return out.String()
+	return ce.Function.String() + "(" + strings.Join(args, ", ") + ")"
 }
 
 type StringLiteral struct {
@@ -227,15 +212,12 @@ type ArrayLiteral struct {
 func (al *ArrayLiteral) expressionNode()      {}
 func (al *ArrayLiteral) TokenLiteral() string { return al.Token.Literal }
 func (al *ArrayLiteral) String() string {
-	var out bytes.Buffer
-
 	elements := make([]string, len(al.Elements))
 	for i, e := range al.Elements {
 		elements[i] = e.String()
 	}
 
-	out.WriteString("[" + strings.Join(elements, ", ") + "]")
-	return out.String()
+	return "[" + strings.Join(elements, ", ") + "]"
 }
 
 type IndexExpression struct {
