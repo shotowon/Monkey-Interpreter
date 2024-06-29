@@ -62,6 +62,18 @@ func Eval(node ast.Node, env *object.Environment) object.Object {
 		}
 
 		return &object.Array{Elements: elements}
+	case *ast.IndexExpression:
+		left := Eval(node.Left, env)
+		if isErr(left) {
+			return left
+		}
+
+		index := Eval(node.Index, env)
+		if isErr(index) {
+			return index
+		}
+
+		return evalIndexExpr(left, index)
 	case *ast.IfExpression:
 		return evalIfExpression(node, env)
 	case *ast.LetStatement:
