@@ -14,6 +14,8 @@ func (o ObjectType) String() string {
 		return "ERROR"
 	case T_STRING:
 		return "STRING"
+	case T_BUILTIN:
+		return "BUILTIN"
 	}
 
 	return "NONE"
