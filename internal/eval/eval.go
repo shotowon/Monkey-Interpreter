@@ -55,6 +55,13 @@ func Eval(node ast.Node, env *object.Environment) object.Object {
 		return &object.String{Value: node.Value}
 	case *ast.BlockStatement:
 		return evalBlockStmt(node, env)
+	case *ast.ArrayLiteral:
+		elements := evalExpressions(node.Elements, env)
+		if len(elements) == 1 && isErr(elements[0]) {
+			return elements[0]
+		}
+
+		return &object.Array{Elements: elements}
 	case *ast.IfExpression:
 		return evalIfExpression(node, env)
 	case *ast.LetStatement:
