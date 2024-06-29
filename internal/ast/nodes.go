@@ -237,3 +237,15 @@ func (al *ArrayLiteral) String() string {
 	out.WriteString("[" + strings.Join(elements, ", ") + "]")
 	return out.String()
 }
+
+type IndexExpression struct {
+	Token token.Token
+	Left  Expression
+	Index Expression
+}
+
+func (ie *IndexExpression) expressionNode()      {}
+func (ie *IndexExpression) TokenLiteral() string { return ie.Token.Literal }
+func (ie *IndexExpression) String() string {
+	return "(" + ie.Left.String() + "[" + ie.Index.String() + "]"
+}
