@@ -286,6 +286,24 @@ func TestEval(t *testing.T) {
 			t.Errorf("String has wrong value. got=%q", str.Value)
 		}
 	})
+
+	t.Run("test array literals", func(t *testing.T) {
+		input := "[1, 2 * 3, 3 + 3]"
+
+		eval := testEval(input)
+		result, ok := eval.(*object.Array)
+		if !ok {
+			t.Fatalf("eval is not *object.Array. got=%T (%+v)", eval, eval)
+		}
+
+		if len(result.Elements) != 3 {
+			t.Fatalf("len of result.Elements is not 3. got=%d", len(result.Elements))
+		}
+
+		testIntegerObject(t, result.Elements[0], 1)
+		testIntegerObject(t, result.Elements[1], 6)
+		testIntegerObject(t, result.Elements[2], 6)
+	})
 }
 
 func TestBuiltinFunctions(t *testing.T) {
