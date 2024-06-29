@@ -280,6 +280,15 @@ func evalExpressions(exprs []ast.Expression, env *object.Environment) []object.O
 	return result
 }
 
+func evalIndexExpr(left, index object.Object) object.Object {
+	switch {
+	case left.Type() == object.T_ARRAY && index.Type() == object.T_INTEGER:
+		return evalArrayIndexExpr(left, index)
+	default:
+		return newError("index operator not found supported: %s", left.Type())
+	}
+}
+
 func evalArrayIndexExpr(array, index object.Object) object.Object {
 	arrayObject := array.(*object.Array)
 	idx := index.(*object.Integer).Value
