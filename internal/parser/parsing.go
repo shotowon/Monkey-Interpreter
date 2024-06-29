@@ -244,33 +244,9 @@ func (p *Parser) parseFunctionParams() []*ast.ID {
 	return identifiers
 }
 
-func (p *Parser) parseCallArgs() []ast.Expression {
-	args := []ast.Expression{}
-
-	if p.peekToken.Type == token.RPAREN {
-		p.nextToken()
-		return args
-	}
-
-	p.nextToken()
-	args = append(args, p.parseExpression(LOWEST))
-
-	for p.peekToken.Type == token.COMMA {
-		p.nextToken()
-		p.nextToken()
-		args = append(args, p.parseExpression(LOWEST))
-	}
-
-	if !p.expectPeek(token.RPAREN) {
-		return nil
-	}
-
-	return args
-}
-
 func (p *Parser) parseCallExpression(fn ast.Expression) ast.Expression {
 	exp := &ast.CallExpression{Token: p.currToken, Function: fn}
-	exp.Arguments = p.parseCallArgs()
+	exp.Arguments = p.parseExpressionList(token.RPAREN)
 	return exp
 }
 
