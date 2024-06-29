@@ -506,24 +506,24 @@ func TestStatementsParsing(t *testing.T) {
 			testInfixExpr(t, expr.Arguments[1], 2, "*", 3)
 			testInfixExpr(t, expr.Arguments[2], 4, "+", 5)
 		})
-	})
-	t.Run("test string literal expression parsing", func(t *testing.T) {
-		input := `"hello world";`
+		t.Run("test string literal expression parsing", func(t *testing.T) {
+			input := `"hello world";`
 
-		l := lexer.New(input)
-		p := parser.New(l)
-		program := p.ParseProgram()
-		checkParserErrors(t, p)
+			l := lexer.New(input)
+			p := parser.New(l)
+			program := p.ParseProgram()
+			checkParserErrors(t, p)
 
-		stmt := program.Statements[0].(*ast.ExpressionStatement)
-		literal, ok := stmt.Expression.(*ast.StringLiteral)
-		if !ok {
-			t.Fatalf("stmt.Expression is not *ast.StringLiteral. got=%T", stmt.Expression)
-		}
+			stmt := program.Statements[0].(*ast.ExpressionStatement)
+			literal, ok := stmt.Expression.(*ast.StringLiteral)
+			if !ok {
+				t.Fatalf("stmt.Expression is not *ast.StringLiteral. got=%T", stmt.Expression)
+			}
 
-		if literal.Value != "hello world" {
-			t.Errorf("literal.Value is not %q. got=%q", "hello world", literal.Value)
-		}
+			if literal.Value != "hello world" {
+				t.Errorf("literal.Value is not %q. got=%q", "hello world", literal.Value)
+			}
+		})
 	})
 }
 
