@@ -60,6 +60,10 @@ func (t TokenType) String() string {
 		return "{"
 	case RBRACE:
 		return "}"
+	case LBRACKET:
+		return "["
+	case RBRACKET:
+		return "]"
 	case FUNC:
 		return "fn"
 	case LET:
