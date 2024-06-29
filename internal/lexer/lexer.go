@@ -55,6 +55,10 @@ func (l *Lexer) NextToken() token.Token {
 		t = token.New(token.LBRACE, l.ch)
 	case '}':
 		t = token.New(token.RBRACE, l.ch)
+	case '[':
+		t = token.New(token.LBRACKET, l.ch)
+	case ']':
+		t = token.New(token.RBRACKET, l.ch)
 	case ',':
 		t = token.New(token.COMMA, l.ch)
 	case '+':
