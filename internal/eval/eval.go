@@ -106,6 +106,10 @@ func evalStringInfixExpression(op string, left, right object.Object) object.Obje
 		leftVal := left.(*object.String).Value
 		rightVal := right.(*object.String).Value
 		return &object.Boolean{Value: leftVal == rightVal}
+	case "!=":
+		leftVal := left.(*object.String).Value
+		rightVal := right.(*object.String).Value
+		return &object.Boolean{Value: leftVal != rightVal}
 	default:
 		return newError("unknown operator: %s %s %s",
 			left.Type(), op, right.Type())
