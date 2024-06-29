@@ -94,6 +94,20 @@ type Builtin struct {
 func (b *Builtin) Type() ObjectType { return T_BUILTIN }
 func (b *Builtin) Inspect() string  { return "builtin function" }
 
+type Array struct {
+	Elements []Object
+}
+
+func (a *Array) Type() ObjectType { return T_ARRAY }
+func (a *Array) Inspect() string {
+	elements := make([]string, len(a.Elements))
+	for i, e := range a.Elements {
+		elements[i] = e.Inspect()
+	}
+
+	return "[" + strings.Join(elements, ", ") + "]"
+}
+
 type Error struct {
 	Message string
 }

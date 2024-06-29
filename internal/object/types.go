@@ -10,4 +10,5 @@ const (
 	T_ERROR
 	T_STRING
 	T_BUILTIN
+	T_ARRAY
 )
