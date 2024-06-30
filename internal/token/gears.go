@@ -50,6 +50,8 @@ func (t TokenType) String() string {
 		return ">"
 	case COMMA:
 		return ","
+	case COLON:
+		return ":"
 	case SEMICOLON:
 		return ";"
 	case LPAREN:
