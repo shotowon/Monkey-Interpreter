@@ -568,6 +568,38 @@ func TestStatementsParsing(t *testing.T) {
 				return
 			}
 		})
+		t.Run("test hash map literal", func(t *testing.T) {
+			input := `{"one": 1, "two": 2}`
+
+			l := lexer.New(input)
+			p := parser.New(l)
+			program := p.ParseProgram()
+			checkParserErrors(t, p)
+
+			stmt := program.Statements[0].(*ast.ExpressionStatement)
+			hm, ok := stmt.Expression.(*ast.HashMapLiteral)
+			if !ok {
+				t.Fatalf("stmt.Expression is not *ast.HashMapLiteral. got=%T", stmt.Expression)
+			}
+
+			if len(hm.Pairs) != 2 {
+				t.Errorf("wrong number of key-value pairs not 2. got=%d", len(hm.Pairs))
+			}
+
+			expected := map[string]int{
+				"one": 1,
+				"two": 2,
+			}
+
+			for k, v := range hm.Pairs {
+				literal, ok := k.(*ast.StringLiteral)
+				if !ok {
+					t.Errorf("k is not *ast.StringLiteral. got=%T", k)
+				}
+
+				testIntegerLiteral(t, v, int64(expected[literal.String()]))
+			}
+		})
 	})
 }
 
