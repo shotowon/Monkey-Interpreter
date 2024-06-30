@@ -22,7 +22,7 @@ var builtins = map[string]*object.Builtin{
 	"first": {
 		Fn: func(args ...object.Object) object.Object {
 			if len(args) != 1 {
-				return newError("wrong number of arguments to `first`. got=%d", len(args))
+				return newError("wrong number of arguments to `first`. got=%d, expected=%d", len(args), 1)
 			}
 
 			switch arg := args[0].(type) {
