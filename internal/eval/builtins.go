@@ -19,4 +19,22 @@ var builtins = map[string]*object.Builtin{
 			}
 		},
 	},
+	"first": {
+		Fn: func(args ...object.Object) object.Object {
+			if len(args) != 1 {
+				return newError("wrong number of arguments to `first`. got=%d", len(args))
+			}
+
+			switch arg := args[0].(type) {
+			case *object.Array:
+				if len(arg.Elements) > 0 {
+					return arg.Elements[0]
+				}
+
+				return NULL
+			default:
+				return newError("unsupported argument passed to `first`. got=%s", args[0].Type().String())
+			}
+		},
+	},
 }
