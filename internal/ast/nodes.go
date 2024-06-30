@@ -231,3 +231,20 @@ func (ie *IndexExpression) TokenLiteral() string { return ie.Token.Literal }
 func (ie *IndexExpression) String() string {
 	return "(" + ie.Left.String() + "[" + ie.Index.String() + "]"
 }
+
+type HashMapLiteral struct {
+	Token token.Token
+	Pairs map[Expression]Expression
+}
+
+func (hml *HashMapLiteral) expressionNode()      {}
+func (hml *HashMapLiteral) TokenLiteral() string { return hml.Token.Literal }
+func (hml *HashMapLiteral) String() string {
+	pairs := make([]string, len(hml.Pairs))
+	i := 0
+	for k, v := range hml.Pairs {
+		pairs[i] = k.String() + ": " + v.String()
+	}
+
+	return "{" + strings.Join(pairs, ", ") + "}"
+}
