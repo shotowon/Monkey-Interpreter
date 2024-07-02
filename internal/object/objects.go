@@ -35,7 +35,7 @@ type String struct {
 	Value string
 }
 
-func (s *String) Inspect() string  { return s.Value }
+func (s *String) Inspect() string  { return "\"" + s.Value + "\"" }
 func (s *String) Type() ObjectType { return T_STRING }
 
 type Null struct{}
