@@ -108,6 +108,26 @@ func (a *Array) Inspect() string {
 	return "[" + strings.Join(elements, ", ") + "]"
 }
 
+type HashPair struct {
+	Key   Object
+	Value Object
+}
+
+type HashMap struct {
+	Pairs map[HashKey]HashPair
+}
+
+func (h *HashMap) Type() ObjectType { return T_HASHMAP }
+func (h *HashMap) Inspect() string {
+	pairs := make([]string, len(h.Pairs))
+	i := 0
+	for _, pair := range h.Pairs {
+		pairs[i] = fmt.Sprintf("%s: %s", pair.Key.Inspect(), pair.Value.Inspect())
+		i++
+	}
+	return "{" + strings.Join(pairs, ", ") + "}"
+}
+
 type Error struct {
 	Message string
 }

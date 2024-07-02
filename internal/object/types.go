@@ -11,4 +11,5 @@ const (
 	T_STRING
 	T_BUILTIN
 	T_ARRAY
+	T_HASHMAP
 )
