@@ -298,6 +298,8 @@ func evalIndexExpr(left, index object.Object) object.Object {
 	switch {
 	case left.Type() == object.T_ARRAY && index.Type() == object.T_INTEGER:
 		return evalArrayIndexExpr(left, index)
+	case left.Type() == object.T_HASHMAP:
+		return evalHashMapIndexExpr(left, index)
 	default:
 		return newError("index operator not found supported: %s", left.Type())
 	}
@@ -313,6 +315,22 @@ func evalArrayIndexExpr(array, index object.Object) object.Object {
 	}
 
 	return arrayObject.Elements[idx]
+}
+
+func evalHashMapIndexExpr(hashMap, index object.Object) object.Object {
+	hm := hashMap.(*object.HashMap)
+
+	k, ok := index.(object.Hashable)
+	if !ok {
+		return newError("unusable as hash keys: %s", index.Type())
+	}
+
+	pair, ok := hm.Pairs[k.HashKey()]
+	if !ok {
+		return NULL
+	}
+
+	return pair.Value
 }
 
 func evalHashLiteral(node *ast.HashMapLiteral, env *object.Environment) object.Object {
