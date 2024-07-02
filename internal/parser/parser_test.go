@@ -618,6 +618,49 @@ func TestStatementsParsing(t *testing.T) {
 				t.Errorf("wrong number of literal.Pairs. got=%d, expected=%d", len(literal.Pairs), 0)
 			}
 		})
+		t.Run("test hash-map literal parsing with expressions", func(t *testing.T) {
+			input := `{"one": 0 + 1, "two": 10 - 8}`
+
+			l := lexer.New(input)
+			p := parser.New(l)
+			program := p.ParseProgram()
+			checkParserErrors(t, p)
+
+			expr := program.Statements[0].(*ast.ExpressionStatement)
+			hashMap, ok := expr.Expression.(*ast.HashMapLiteral)
+			if !ok {
+				t.Fatalf("expr.Expression is not *ast.HashMapLiteral. got=%T", expr.Expression)
+			}
+
+			if len(hashMap.Pairs) != 2 {
+				t.Errorf("wrong number of literal.Pairs. got=%d, expected=%d", len(hashMap.Pairs), 2)
+			}
+
+			pairsTest := map[string]func(ast.Expression){
+				"one": func(e ast.Expression) {
+					testInfixExpr(t, e, 0, "+", 1)
+				},
+				"two": func(e ast.Expression) {
+					testInfixExpr(t, e, 10, "-", 8)
+				},
+			}
+
+			for k, v := range hashMap.Pairs {
+				literal, ok := k.(*ast.StringLiteral)
+				if !ok {
+					t.Errorf("k is not *ast.StringLiteral. got=%T", k)
+					continue
+				}
+
+				testFunc, ok := pairsTest[literal.String()]
+				if !ok {
+					t.Errorf("no test function for key %q found", literal.String())
+					continue
+				}
+
+				testFunc(v)
+			}
+		})
 	})
 }
 
