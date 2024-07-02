@@ -112,4 +112,13 @@ var builtins = map[string]*object.Builtin{
 			return NULL
 		},
 	},
+	"puts": {
+		Fn: func(args ...object.Object) object.Object {
+			for i := 0; i < len(args); i++ {
+				fmt.Println(args[i].Inspect())
+			}
+
+			return NULL
+		},
+	},
 }
