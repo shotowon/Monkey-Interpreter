@@ -1,6 +1,9 @@
 package eval
 
-import "monkey/internal/object"
+import (
+	"fmt"
+	"monkey/internal/object"
+)
 
 var builtins = map[string]*object.Builtin{
 	"len": {
@@ -96,6 +99,17 @@ var builtins = map[string]*object.Builtin{
 			default:
 				return NULL
 			}
+		},
+	},
+	"print": {
+		Fn: func(args ...object.Object) object.Object {
+			printable := ""
+			for i := 0; i < len(args); i++ {
+				printable += args[i].Inspect() + " "
+			}
+			fmt.Println(printable)
+
+			return NULL
 		},
 	},
 }
