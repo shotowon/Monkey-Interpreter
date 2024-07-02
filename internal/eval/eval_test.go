@@ -398,6 +398,50 @@ func TestEval(t *testing.T) {
 			testIntegerObject(t, pair.Value, expectedValue)
 		}
 	})
+	t.Run("test hash-map index expression", func(t *testing.T) {
+		type hashMapIndexTest struct {
+			input    string
+			expected interface{}
+		}
+
+		tests := []hashMapIndexTest{
+			{
+				`{"foo": 5}["foo"]`,
+				5,
+			},
+			{
+				`{"foo": 5}["bar"]`,
+				nil,
+			},
+			{
+				`let key = "foo"; {"foo": 5}[key]`,
+				5,
+			},
+			{
+				`{}["foo"]`,
+				nil,
+			},
+			{
+				`{true: 5}[true]`,
+				5,
+			},
+			{
+				`{false: 5}[false]`,
+				5,
+			},
+		}
+
+		for _, tt := range tests {
+			eval := testEval(tt.input)
+
+			switch obj := tt.expected.(type) {
+			case int:
+				testIntegerObject(t, eval, int64(obj))
+			default:
+				testNullObject(t, eval)
+			}
+		}
+	})
 }
 
 func TestBuiltinFunctions(t *testing.T) {
