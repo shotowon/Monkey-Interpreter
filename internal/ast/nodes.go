@@ -243,7 +243,8 @@ func (hml *HashMapLiteral) String() string {
 	pairs := make([]string, len(hml.Pairs))
 	i := 0
 	for k, v := range hml.Pairs {
-		pairs[i] = k.String() + ": " + v.String()
+		pairs[i] = k.String() + ":" + v.String()
+		i++
 	}
 
 	return "{" + strings.Join(pairs, ", ") + "}"
