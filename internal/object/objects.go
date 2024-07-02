@@ -3,7 +3,6 @@ package object
 import (
 	"bytes"
 	"fmt"
-	"hash/fnv"
 	"monkey/internal/ast"
 	"strings"
 )
@@ -115,30 +114,3 @@ type Error struct {
 
 func (e *Error) Type() ObjectType { return T_ERROR }
 func (e *Error) Inspect() string  { return "ERROR: " + e.Message }
-
-type HashKey struct {
-	Type  ObjectType
-	Value uint64
-}
-
-func (i *Integer) HashKey() HashKey {
-	return HashKey{Type: i.Type(), Value: uint64(i.Value)}
-}
-
-func (b *Boolean) HashKey() HashKey {
-	var val uint64
-
-	if b.Value {
-		val = 1
-	} else {
-		val = 0
-	}
-
-	return HashKey{Type: b.Type(), Value: val}
-}
-
-func (s *String) HashKey() HashKey {
-	h := fnv.New64a()
-	h.Write([]byte(s.Value))
-	return HashKey{Type: s.Type(), Value: h.Sum64()}
-}
