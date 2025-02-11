@@ -53,8 +53,14 @@ To run the Monkey interpreter, make sure you have Go installed. Clone this repos
 ```bash
 git clone https://github.com/shotowon/Monkey-Interpreter.git
 cd Monkey-Interpreter
-go build ./cmd/interpreter
+go build -o monkey ./cmd/interpreter
 ./monkey
+
+or
+
+make build-interpreter
+./monkey
+./interpreter
 ```
 
 Once you have the interpreter running, you can type Monkey code directly into the prompt:
